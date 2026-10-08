@@ -1,297 +1,253 @@
 import { useState } from 'react';
 
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  difficulty: 'Легко' | 'Средне' | 'Сложно';
-  githubUrl?: string;
-  features: string[];
-  icon: string;
-  techStack: string[];
-};
-
-const projects: Project[] = [
+const projects = [
   {
     id: 1,
     title: 'Home Assistant Dashboard',
-    description: 'Панель управления умным домом с тач-интерфейсом. Отображает состояние датчиков, управление освещением, климатом и безопасностью. Использует ESPHome + LVGL для красивого UI.',
+    description: 'Панель управления умным домом с тач-интерфейсом. Отображает состояние датчиков, управление освещением, климатом и безопасностью.',
     category: 'Умный дом',
     difficulty: 'Средне',
-    githubUrl: 'https://github.com/ultramcu/guition-jc4880p4-bsp',
-    features: ['Управление освещением', 'Мониторинг датчиков', 'Климат-контроль', 'Сцены и автоматизации', 'Голосовое управление'],
+    url: 'https://github.com/ultramcu/guition-jc4880p4-bsp',
+    features: ['Управление освещением', 'Мониторинг датчиков', 'Климат-контроль', 'Сцены'],
     icon: '🏠',
-    techStack: ['ESPHome', 'LVGL', 'Home Assistant', 'WiFi', 'MQTT']
+    tech: ['ESPHome', 'LVGL', 'WiFi', 'MQTT']
   },
   {
     id: 2,
     title: 'Интернет-радио MiniWebRadio',
-    description: 'Полноценное интернет-радио с тач-управлением, отображением информации о станции, эквалайзером, MP3-плеером, будильником и FTP-сервером для загрузки треков.',
+    description: 'Интернет-радио с тач-управлением, эквалайзером, MP3-плеером, будильником и FTP-сервером.',
     category: 'Мультимедиа',
     difficulty: 'Средне',
-    githubUrl: 'https://github.com/schreibfaul1/ESP32-MiniWebRadio',
-    features: ['WiFi радио', 'MP3 плеер', 'Будильник', 'Эквалайзер', 'Таймер сна'],
+    url: 'https://github.com/schreibfaul1/ESP32-MiniWebRadio',
+    features: ['WiFi радио', 'MP3 плеер', 'Будильник', 'Эквалайзер'],
     icon: '📻',
-    techStack: ['ESP-IDF', 'I2S Audio', 'LVGL', 'WiFi', 'FTP']
+    tech: ['ESP-IDF', 'I2S', 'LVGL', 'WiFi']
   },
   {
     id: 3,
-    title: 'AI Голосовой Ассистент (XiaoZhi)',
-    description: 'Открытый AI-чатбот для ESP32 с голосовым взаимодействием. Поддержка больших языковых моделей (Qwen/DeepSeek), распознавание речи и синтез голоса.',
+    title: 'AI Голосовой Ассистент XiaoZhi',
+    description: 'Открытый AI-чатбот для ESP32 с голосовым взаимодействием. Поддержка LLM (Qwen/DeepSeek).',
     category: 'AI / IoT',
     difficulty: 'Сложно',
-    githubUrl: 'https://github.com/78/xiaozhi-esp32',
-    features: ['Распознавание речи', 'Синтез голоса', 'AI диалоги', 'Эмоциональные реакции', 'IoT интеграция'],
+    url: 'https://github.com/78/xiaozhi-esp32',
+    features: ['Распознавание речи', 'Синтез голоса', 'AI диалоги', 'IoT'],
     icon: '🤖',
-    techStack: ['ESP-IDF', 'I2S', 'WiFi', 'LLM API', 'LVGL']
+    tech: ['ESP-IDF', 'I2S', 'WiFi', 'LLM API']
   },
   {
     id: 4,
-    title: 'Метеостанция + Монитор качества воздуха',
-    description: 'Продвинутая метеостанция с прогнозом погоды, мониторингом качества воздуха, подключением к LoRa и ESP-NOW сенсорам. Поддержка различных Weather API.',
+    title: 'Метеостанция + Монитор воздуха',
+    description: 'Метеостанция с прогнозом, мониторингом качества воздуха, LoRa и ESP-NOW сенсорами.',
     category: 'Мониторинг',
     difficulty: 'Средне',
-    githubUrl: 'https://embeddednerd.com/esp32-p4-weather-station/',
-    features: ['Прогноз погоды', 'Качество воздуха', 'LoRa сенсоры', 'ESP-NOW', 'Графики данных'],
+    url: 'https://embeddednerd.com/esp32-p4-weather-station/',
+    features: ['Прогноз погоды', 'Качество воздуха', 'LoRa', 'Графики'],
     icon: '🌤️',
-    techStack: ['ESP-IDF', 'LVGL', 'LoRa', 'ESP-NOW', 'Weather API']
+    tech: ['ESP-IDF', 'LVGL', 'LoRa', 'ESP-NOW']
   },
   {
     id: 5,
     title: 'Пульт дистанционного управления',
-    description: 'Универсальный пульт для управления ИК/RF устройствами, медиа-плеерами, телевизорами и другой техникой. Красивый тач-интерфейс с настраиваемыми кнопками.',
+    description: 'Универсальный пульт для ИК/RF устройств с настраиваемым тач-интерфейсом.',
     category: 'Умный дом',
     difficulty: 'Легко',
-    githubUrl: 'https://github.com/elik745i/ESP32-2432S024C-Remote',
-    features: ['ИК управление', 'RF команды', 'Настраиваемые кнопки', 'Макросы', 'WiFi команды'],
+    url: 'https://github.com/elik745i/ESP32-2432S024C-Remote',
+    features: ['ИК управление', 'RF команды', 'Макросы', 'WiFi'],
     icon: '🎮',
-    techStack: ['Arduino', 'IR Remote', 'RF 433MHz', 'WiFi', 'LVGL']
+    tech: ['Arduino', 'IR', 'RF 433', 'WiFi']
   },
   {
     id: 6,
-    title: 'Веб-радио с визуализатором спектра',
-    description: 'Сенсорное интернет-радио с живым 32-полосным визуализатором спектра. Стримит MP3 станции из каталога Radio Browser с красивыми анимациями.',
+    title: 'Веб-радио с визуализатором',
+    description: 'Интернет-радио с 32-полосным визуализатором спектра и каталогом станций.',
     category: 'Мультимедиа',
     difficulty: 'Средне',
-    githubUrl: 'https://github.com/dmatking/esp32-p4-webradio',
-    features: ['Спектр-визуализатор', 'Radio Browser', 'Избранное', 'Громкость', 'Инфо о станции'],
+    url: 'https://github.com/dmatking/esp32-p4-webradio',
+    features: ['Спектр-визуализатор', 'Radio Browser', 'Избранное'],
     icon: '🎵',
-    techStack: ['ESP-IDF', 'FFT', 'I2S', 'LVGL', 'HTTP Streaming']
+    tech: ['ESP-IDF', 'FFT', 'I2S', 'LVGL']
   },
   {
     id: 7,
     title: 'Камера + Видеодомофон',
-    description: 'Использует встроенную камеру для видеонаблюдения или видеодомофона. Поддержка esp_video в ESPHome, стриминг видео на дисплей и запись на SD-карту.',
+    description: 'Видеонаблюдение или видеодомофон с esp_video, стримингом и записью на SD.',
     category: 'Безопасность',
     difficulty: 'Сложно',
-    githubUrl: 'https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211',
-    features: ['Видеостриминг', 'Запись на SD', 'Детекция движения', 'Двусторонняя связь', 'HA интеграция'],
+    url: 'https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211',
+    features: ['Видеостриминг', 'Запись SD', 'Детекция движения'],
     icon: '📹',
-    techStack: ['ESPHome', 'esp_video', 'Camera', 'SD Card', 'I2S Audio']
+    tech: ['ESPHome', 'Camera', 'SD Card', 'I2S']
   },
   {
     id: 8,
-    title: 'Часы + Информационная панель',
-    description: 'Настольные часы с отображением времени, даты, погоды, календаря событий, напоминаний и другой полезной информации. Стильный минималистичный дизайн.',
+    title: 'Часы + Инфо-панель',
+    description: 'Настольные часы с погодой, календарём, напоминаниями и ночным режимом.',
     category: 'Информация',
     difficulty: 'Легко',
-    features: ['Часы с секундами', 'Погода', 'Календарь', 'Напоминания', 'Ночной режим'],
+    url: '',
+    features: ['Часы', 'Погода', 'Календарь', 'Ночной режим'],
     icon: '⏰',
-    techStack: ['Arduino', 'LVGL', 'NTP', 'Weather API', 'WiFi']
+    tech: ['Arduino', 'LVGL', 'NTP', 'WiFi']
   },
   {
     id: 9,
-    title: 'Мониторинг энергии (Solar Dashboard)',
-    description: 'Модульный проект для визуализации распределения энергии: солнечная генерация, потребление из сети, возврат в сеть. Данные в реальном времени.',
+    title: 'Мониторинг энергии',
+    description: 'Визуализация солнечной генерации, потребления и возврата энергии в сеть.',
     category: 'Мониторинг',
     difficulty: 'Средне',
-    features: ['Солнечная генерация', 'Потребление сети', 'Визуализация потоков', 'История данных', 'HA интеграция'],
+    url: '',
+    features: ['Солнечная генерация', 'Потребление', 'Графики', 'HA'],
     icon: '⚡',
-    techStack: ['ESPHome', 'LVGL', 'Modbus', 'MQTT', 'Home Assistant']
+    tech: ['ESPHome', 'LVGL', 'Modbus', 'MQTT']
   },
   {
     id: 10,
-    title: 'ESP32-P4 ↔ C6 Коммуникация + SD',
-    description: 'Демонстрационный проект связи между ESP32-P4 и ESP32-C6 через RS232 + работа с SD-картой. Базовый проект для понимания архитектуры платы.',
+    title: 'P4 ↔ C6 Коммуникация + SD',
+    description: 'Демо связи ESP32-P4 и C6 через RS232 + работа с SD-картой.',
     category: 'Обучение',
     difficulty: 'Легко',
-    githubUrl: 'https://github.com/buccaneer-jak/JC4880P443C-P4-to-C6-RS232-communication-and-SD-Card-connection',
-    features: ['RS232 связь P4↔C6', 'SD карта', 'WiFi через C6', 'Диагностика', 'Hello World'],
+    url: 'https://github.com/buccaneer-jak/JC4880P443C-P4-to-C6-RS232-communication-and-SD-Card-connection',
+    features: ['RS232 P4↔C6', 'SD карта', 'WiFi через C6'],
     icon: '🔌',
-    techStack: ['ESP-IDF', 'UART/RS232', 'SD SPI', 'Arduino']
+    tech: ['ESP-IDF', 'UART', 'SD SPI']
   },
   {
     id: 11,
-    title: 'NINA Astrophotography Dashboard',
-    description: 'Тач-панель для астрофотографии: отображение 3D карты неба, погода, состояние оборудования, таймеры экспозиции. Для телескопов и камер.',
+    title: 'NINA Astrophotography',
+    description: 'Тач-панель для астрофотографии: карта неба, погода, таймеры экспозиции.',
     category: 'Специализированный',
     difficulty: 'Сложно',
-    githubUrl: 'https://github.com/chvvkumar/ESP32-P4-NINA-Display',
-    features: ['3D карта неба', 'Погода для астро', 'Таймер экспозиции', 'Статус оборудования', 'Фокусировка'],
+    url: 'https://github.com/chvvkumar/ESP32-P4-NINA-Display',
+    features: ['3D карта неба', 'Таймер экспозиции', 'Статус'],
     icon: '🔭',
-    techStack: ['ESP-IDF', 'LVGL', 'NINA API', 'WiFi', '3D Graphics']
+    tech: ['ESP-IDF', 'LVGL', 'NINA API', '3D']
   },
   {
     id: 12,
-    title: 'Медиа-плеер с ESPHome',
-    description: 'Полноценный медиа-плеер на базе ESPHome: потоковое аудио, управление через Home Assistant, отображение обложек, управление очередью воспроизведения.',
+    title: 'Медиа-плеер ESPHome',
+    description: 'Медиа-плеер на ESPHome: стриминг аудио, обложки, управление через HA.',
     category: 'Мультимедиа',
     difficulty: 'Средне',
-    githubUrl: 'https://jtenniswood.github.io/esphome-media-player/devices/esp32-p4-jc8012p4a1.html',
-    features: ['Стриминг аудио', 'Обложки треков', 'HA интеграция', 'Очередь', 'Управление'],
+    url: 'https://jtenniswood.github.io/esphome-media-player/',
+    features: ['Стриминг', 'Обложки', 'HA', 'Очередь'],
     icon: '🎧',
-    techStack: ['ESPHome', 'I2S', 'WiFi', 'Home Assistant', 'LVGL']
+    tech: ['ESPHome', 'I2S', 'WiFi', 'HA']
   }
 ];
 
-const boardSpecs = {
-  model: 'JC4880P443C_I_W_Y',
-  screen: '4.3" IPS TFT',
-  resolution: '480 × 800 px',
-  touch: 'GT911 Capacitive',
-  mainMCU: 'ESP32-P4 (RISC-V, 400MHz)',
-  wifiMCU: 'ESP32-C6 (WiFi 6 + BLE 5)',
-  display: 'MIPI-DSI (ST7701S)',
-  camera: 'Поддержка (OV2640/OV5640)',
-  audio: 'I2S + Speaker',
-  storage: 'MicroSD Card',
-  power: '5V USB-C',
-  price: '~$35'
-};
+const specs = [
+  { label: 'Модель', value: 'JC4880P443C_I_W_Y' },
+  { label: 'Экран', value: '4.3" IPS TFT' },
+  { label: 'Разрешение', value: '480 × 800 px' },
+  { label: 'Тачскрин', value: 'GT911 Capacitive' },
+  { label: 'Основной MCU', value: 'ESP32-P4 (RISC-V, 400MHz)' },
+  { label: 'WiFi/BLE MCU', value: 'ESP32-C6 (WiFi 6 + BLE 5)' },
+  { label: 'Интерфейс дисплея', value: 'MIPI-DSI (ST7701S)' },
+  { label: 'Камера', value: 'OV2640/OV5640' },
+  { label: 'Аудио', value: 'I2S + Speaker' },
+  { label: 'Хранилище', value: 'MicroSD Card' },
+  { label: 'Питание', value: '5V USB-C' },
+  { label: 'Цена', value: '~$35' }
+];
+
+const resources = [
+  { title: 'guition-jc4880p4-bsp', desc: 'Board Support Package для Arduino/PlatformIO', url: 'https://github.com/ultramcu/guition-jc4880p4-bsp' },
+  { title: 'GitHub Topic: esp32p4', desc: 'Все проекты с тегом ESP32-P4', url: 'https://github.com/topics/esp32p4' },
+  { title: 'HA Working Config', desc: 'Рабочая конфигурация ESPHome', url: 'https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211' },
+  { title: 'GUITION Official', desc: 'Документация от производителя', url: 'https://www.guition.com/esp32p4-display-module/esp32p4-screen-module' },
+  { title: 'Reddit r/esp32', desc: 'Обсуждение и опыт сообщества', url: 'https://www.reddit.com/r/esp32/' },
+  { title: 'CNX Software', desc: 'Обзор платы с распиновкой', url: 'https://www.cnx-software.com/2025/08/12/4-3-inch-touch-display-board-features-single-esp32-p4-esp32-c6-module-supports-camera-and-speakers/' }
+];
 
 function App() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('Все');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [selected, setSelected] = useState<string>('Все');
+  const [search, setSearch] = useState<string>('');
+  const [modal, setModal] = useState<any>(null);
 
   const categories = ['Все', ...Array.from(new Set(projects.map(p => p.category)))];
 
-  const filteredProjects = projects.filter(p => {
-    const matchesCategory = selectedCategory === 'Все' || p.category === selectedCategory;
-    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+  const filtered = projects.filter(p => {
+    const matchCat = selected === 'Все' || p.category === selected;
+    const matchSearch = p.title.toLowerCase().includes(search.toLowerCase()) ||
+      p.description.toLowerCase().includes(search.toLowerCase());
+    return matchCat && matchSearch;
   });
 
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Легко': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Средне': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Сложно': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Умный дом': return 'bg-blue-500';
-      case 'Мультимедиа': return 'bg-purple-500';
-      case 'AI / IoT': return 'bg-pink-500';
-      case 'Мониторинг': return 'bg-emerald-500';
-      case 'Безопасность': return 'bg-orange-500';
-      case 'Информация': return 'bg-cyan-500';
-      case 'Обучение': return 'bg-indigo-500';
-      case 'Специализированный': return 'bg-rose-500';
-      default: return 'bg-gray-500';
-    }
+  const diffColor = (d: string) => {
+    if (d === 'Легко') return 'bg-green-100 text-green-800';
+    if (d === 'Средне') return 'bg-yellow-100 text-yellow-800';
+    return 'bg-red-100 text-red-800';
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)', color: 'white', fontFamily: 'system-ui, sans-serif' }}>
       {/* Header */}
-      <header className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span className="text-sm text-gray-300">Исследование проектов для ESP32-P4</span>
-            </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4">
-              GUITION JC4880P443C
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Исследование интересных open-source проектов на GitHub, которые можно реализовать на плате с 4.3" IPS дисплеем, ESP32-P4 + ESP32-C6
-            </p>
+      <header style={{ padding: '60px 20px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(90deg, rgba(59,130,246,0.1), rgba(168,85,247,0.1))' }}></div>
+        <div style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '999px', padding: '8px 16px', marginBottom: '24px' }}>
+            <span style={{ width: '8px', height: '8px', background: '#4ade80', borderRadius: '50%' }}></span>
+            <span style={{ fontSize: '14px', color: '#d1d5db' }}>Исследование проектов для ESP32-P4</span>
           </div>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 'bold', background: 'linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '16px' }}>
+            GUITION JC4880P443C
+          </h1>
+          <p style={{ fontSize: '18px', color: '#d1d5db', maxWidth: '700px', margin: '0 auto' }}>
+            Исследование open-source проектов для платы с 4.3" IPS дисплеем, ESP32-P4 + ESP32-C6
+          </p>
         </div>
       </header>
 
-      {/* Board Specs */}
-      <section className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 lg:p-8">
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-            <span className="text-3xl">📋</span>
-            Характеристики платы
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {Object.entries(boardSpecs).map(([key, value]) => (
-              <div key={key} className="bg-white/5 rounded-xl p-4 border border-white/5 hover:border-blue-500/30 transition-colors">
-                <div className="text-xs text-gray-400 uppercase tracking-wider mb-1">
-                  {key === 'mainMCU' ? 'Основной MCU' :
-                   key === 'wifiMCU' ? 'WiFi/BLE MCU' :
-                   key === 'screen' ? 'Экран' :
-                   key === 'resolution' ? 'Разрешение' :
-                   key === 'touch' ? 'Тачскрин' :
-                   key === 'display' ? 'Интерфейс дисплея' :
-                   key === 'camera' ? 'Камера' :
-                   key === 'audio' ? 'Аудио' :
-                   key === 'storage' ? 'Хранилище' :
-                   key === 'power' ? 'Питание' :
-                   key === 'price' ? 'Цена' :
-                   key === 'model' ? 'Модель' : key}
-                </div>
-                <div className="text-sm font-semibold text-white">{value}</div>
+      {/* Specs */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 40px' }}>
+        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>📋 Характеристики платы</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
+            {specs.map((s, i) => (
+              <div key={i} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                <div style={{ fontSize: '11px', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{s.label}</div>
+                <div style={{ fontSize: '14px', fontWeight: '600' }}>{s.value}</div>
               </div>
             ))}
           </div>
-          <div className="mt-6 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
-            <p className="text-sm text-blue-200">
+          <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(59,130,246,0.1)', borderRadius: '12px', border: '1px solid rgba(59,130,246,0.2)' }}>
+            <p style={{ fontSize: '14px', color: '#bfdbfe', margin: 0 }}>
               <strong>💡 Особенности:</strong> Двухчиповая архитектура — ESP32-P4 отвечает за дисплей и вычисления (MIPI-DSI, PPA, USB), 
-              а ESP32-C6 обеспечивает WiFi 6 / BLE 5 / Thread/Zigbee связь. Связь между чипами по UART/RS232.
-              Поддержка камеры, динамика, SD-карты и тачскрина GT911.
+              а ESP32-C6 обеспечивает WiFi 6 / BLE 5 / Thread связь. Поддержка камеры, динамика, SD-карты и тачскрина GT911.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section className="max-w-7xl mx-auto px-4 pb-12 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-2 flex items-center gap-3">
-          <span className="text-3xl">🚀</span>
-          Проекты для реализации
-        </h2>
-        <p className="text-gray-400 mb-8">Найдено {projects.length} интересных проектов на GitHub и в сообществе</p>
+      {/* Projects */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 40px' }}>
+        <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '8px' }}>🚀 Проекты для реализации</h2>
+        <p style={{ color: '#9ca3af', marginBottom: '24px' }}>Найдено {projects.length} интересных проектов</p>
 
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              placeholder="Поиск проектов..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50"
-            />
-            <svg className="absolute left-3 top-3.5 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-          <div className="flex flex-wrap gap-2">
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}>
+          <input
+            type="text"
+            placeholder="Поиск..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            style={{ flex: '1 1 200px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '10px 16px', color: 'white', fontSize: '14px', outline: 'none' }}
+          />
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {categories.map(cat => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                  selectedCategory === cat
-                    ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/25'
-                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
-                }`}
+                onClick={() => setSelected(cat)}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  border: selected === cat ? 'none' : '1px solid rgba(255,255,255,0.1)',
+                  background: selected === cat ? '#3b82f6' : 'rgba(255,255,255,0.05)',
+                  color: 'white',
+                  cursor: 'pointer'
+                }}
               >
                 {cat}
               </button>
@@ -299,169 +255,100 @@ function App() {
           </div>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map(project => (
+        {/* Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+          {filtered.map(p => (
             <div
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="group bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 hover:border-blue-500/30 hover:bg-white/8 transition-all cursor-pointer hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1"
+              key={p.id}
+              onClick={() => setModal(p)}
+              style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', cursor: 'pointer', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(59,130,246,0.3)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-4xl">{project.icon}</span>
-                <div className="flex gap-2">
-                  <span className={`text-xs px-2 py-1 rounded-full border ${getDifficultyColor(project.difficulty)}`}>
-                    {project.difficulty}
-                  </span>
-                </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                <span style={{ fontSize: '36px' }}>{p.icon}</span>
+                <span style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '999px' }} className={diffColor(p.difficulty)}>
+                  {p.difficulty}
+                </span>
               </div>
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-sm text-gray-400 mb-4 line-clamp-3">
-                {project.description}
-              </p>
-              <div className="flex flex-wrap gap-1 mb-4">
-                {project.techStack.slice(0, 3).map(tech => (
-                  <span key={tech} className="text-xs bg-white/10 text-gray-300 px-2 py-1 rounded-md">
-                    {tech}
-                  </span>
+              <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>{p.title}</h3>
+              <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '12px', lineHeight: '1.5' }}>{p.description}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '12px' }}>
+                {p.tech.slice(0, 3).map(t => (
+                  <span key={t} style={{ fontSize: '11px', background: 'rgba(255,255,255,0.1)', color: '#d1d5db', padding: '3px 8px', borderRadius: '6px' }}>{t}</span>
                 ))}
-                {project.techStack.length > 3 && (
-                  <span className="text-xs text-gray-500 px-2 py-1">
-                    +{project.techStack.length - 3}
-                  </span>
-                )}
               </div>
-              <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${getCategoryColor(project.category)}`}></span>
-                <span className="text-xs text-gray-400">{project.category}</span>
-              </div>
+              <div style={{ fontSize: '12px', color: '#6b7280' }}>{p.category}</div>
             </div>
           ))}
         </div>
 
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-16">
-            <span className="text-5xl mb-4 block">🔍</span>
-            <p className="text-gray-400 text-lg">Проекты не найдены. Попробуйте изменить фильтры.</p>
+        {filtered.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '60px 0' }}>
+            <span style={{ fontSize: '48px', display: 'block', marginBottom: '12px' }}>🔍</span>
+            <p style={{ color: '#9ca3af' }}>Проекты не найдены</p>
           </div>
         )}
       </section>
 
-      {/* Key Resources */}
-      <section className="max-w-7xl mx-auto px-4 pb-12 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-          <span className="text-3xl">📚</span>
-          Ключевые ресурсы
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <a href="https://github.com/ultramcu/guition-jc4880p4-bsp" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-green-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">📦</span>
-              <h3 className="font-bold text-white group-hover:text-green-300">guition-jc4880p4-bsp</h3>
-            </div>
-            <p className="text-sm text-gray-400">Board Support Package для Arduino/PlatformIO. Ручная инициализация ST7701S MIPI-DSI, PPA hardware-rotate, GT911 touch.</p>
-            <div className="mt-3 text-xs text-green-400">github.com/ultramcu/guition-jc4880p4-bsp</div>
-          </a>
-          <a href="https://github.com/topics/esp32p4" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-green-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">🏷️</span>
-              <h3 className="font-bold text-white group-hover:text-green-300">GitHub Topic: esp32p4</h3>
-            </div>
-            <p className="text-sm text-gray-400">Все проекты с тегом ESP32-P4 на GitHub. Новые репозитории появляются каждый день.</p>
-            <div className="mt-3 text-xs text-green-400">github.com/topics/esp32p4</div>
-          </a>
-          <a href="https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-blue-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">🏠</span>
-              <h3 className="font-bold text-white group-hover:text-blue-300">HA Working Config</h3>
-            </div>
-            <p className="text-sm text-gray-400">Рабочая конфигурация ESPHome для JC4880P443. Дисплей, тач, камера, аудио — всё проверено.</p>
-            <div className="mt-3 text-xs text-blue-400">community.home-assistant.io</div>
-          </a>
-          <a href="https://www.guition.com/esp32p4-display-module/esp32p4-screen-module" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-purple-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">🌐</span>
-              <h3 className="font-bold text-white group-hover:text-purple-300">Официальная страница GUITION</h3>
-            </div>
-            <p className="text-sm text-gray-400">Полная спецификация, даташиты, примеры кода и документация от производителя.</p>
-            <div className="mt-3 text-xs text-purple-400">guition.com</div>
-          </a>
-          <a href="https://www.reddit.com/r/esp32/comments/1nml6fm/guition_jc4880p433_43_capacitive_touch_display/" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-orange-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">💬</span>
-              <h3 className="font-bold text-white group-hover:text-orange-300">Reddit r/esp32</h3>
-            </div>
-            <p className="text-sm text-gray-400">Обсуждение платы, советы по прошивке, опыт сообщества и ссылки на полезные ресурсы.</p>
-            <div className="mt-3 text-xs text-orange-400">reddit.com/r/esp32</div>
-          </a>
-          <a href="https://www.cnx-software.com/2025/08/12/4-3-inch-touch-display-board-features-single-esp32-p4-esp32-c6-module-supports-camera-and-speakers/" target="_blank" rel="noopener noreferrer"
-            className="bg-white/5 rounded-2xl border border-white/10 p-6 hover:border-cyan-500/30 transition-all hover:bg-white/8 group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">📰</span>
-              <h3 className="font-bold text-white group-hover:text-cyan-300">CNX Software обзор</h3>
-            </div>
-            <p className="text-sm text-gray-400">Подробный обзор платы с фото, распиновкой и анализом возможностей.</p>
-            <div className="mt-3 text-xs text-cyan-400">cnx-software.com</div>
-          </a>
+      {/* Resources */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 40px' }}>
+        <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '24px' }}>📚 Ключевые ресурсы</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+          {resources.map((r, i) => (
+            <a key={i} href={r.url} target="_blank" rel="noopener noreferrer"
+              style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '20px', textDecoration: 'none', color: 'white', display: 'block', transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(34,197,94,0.3)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+            >
+              <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>{r.title}</h3>
+              <p style={{ fontSize: '13px', color: '#9ca3af', margin: 0 }}>{r.desc}</p>
+            </a>
+          ))}
         </div>
       </section>
 
-      {/* Architecture Diagram */}
-      <section className="max-w-7xl mx-auto px-4 pb-12 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-          <span className="text-3xl">🏗️</span>
-          Архитектура платы
-        </h2>
-        <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 lg:p-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* ESP32-P4 */}
-            <div className="bg-blue-500/10 rounded-xl border border-blue-500/20 p-5">
-              <h3 className="text-lg font-bold text-blue-300 mb-3">ESP32-P4 (Основной)</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> RISC-V 400MHz dual-core</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> 768KB SRAM + PSRAM</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> MIPI-DSI дисплей</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> PPA (2D графика)</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> USB OTG</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> SD/MMC контроллер</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> Камерный интерфейс</li>
-                <li className="flex items-center gap-2"><span className="text-blue-400">▸</span> I2S аудио</li>
+      {/* Architecture */}
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 40px' }}>
+        <h2 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '24px' }}>🏗️ Архитектура платы</h2>
+        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', padding: '24px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+            <div style={{ background: 'rgba(59,130,246,0.1)', borderRadius: '12px', border: '1px solid rgba(59,130,246,0.2)', padding: '20px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#93c5fd', marginBottom: '12px' }}>ESP32-P4 (Основной)</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', color: '#d1d5db' }}>
+                <li style={{ marginBottom: '6px' }}>▸ RISC-V 400MHz dual-core</li>
+                <li style={{ marginBottom: '6px' }}>▸ 768KB SRAM + PSRAM</li>
+                <li style={{ marginBottom: '6px' }}>▸ MIPI-DSI дисплей</li>
+                <li style={{ marginBottom: '6px' }}>▸ PPA (2D графика)</li>
+                <li style={{ marginBottom: '6px' }}>▸ USB OTG</li>
+                <li style={{ marginBottom: '6px' }}>▸ SD/MMC контроллер</li>
+                <li style={{ marginBottom: '6px' }}>▸ Камерный интерфейс</li>
+                <li>▸ I2S аудио</li>
               </ul>
             </div>
-            {/* Connection */}
-            <div className="flex items-center justify-center">
-              <div className="text-center">
-                <div className="bg-white/10 rounded-xl p-4 border border-white/10">
-                  <div className="text-2xl mb-2">🔗</div>
-                  <p className="text-sm text-gray-300 font-medium">UART / RS232</p>
-                  <p className="text-xs text-gray-500 mt-1">Связь между чипами</p>
-                  <div className="mt-3 flex flex-col gap-1">
-                    <span className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">WiFi 6</span>
-                    <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">BLE 5</span>
-                    <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded">Thread/Zigbee</span>
-                  </div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: '12px', padding: '20px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ fontSize: '32px', marginBottom: '8px' }}>🔗</div>
+                <p style={{ fontSize: '14px', fontWeight: '600', margin: '0 0 4px' }}>UART / RS232</p>
+                <p style={{ fontSize: '12px', color: '#9ca3af', margin: '0 0 12px' }}>Связь между чипами</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{ fontSize: '11px', background: 'rgba(34,197,94,0.2)', color: '#86efac', padding: '4px 8px', borderRadius: '6px' }}>WiFi 6</span>
+                  <span style={{ fontSize: '11px', background: 'rgba(168,85,247,0.2)', color: '#d8b4fe', padding: '4px 8px', borderRadius: '6px' }}>BLE 5</span>
+                  <span style={{ fontSize: '11px', background: 'rgba(251,146,60,0.2)', color: '#fed7aa', padding: '4px 8px', borderRadius: '6px' }}>Thread/Zigbee</span>
                 </div>
               </div>
             </div>
-            {/* ESP32-C6 */}
-            <div className="bg-green-500/10 rounded-xl border border-green-500/20 p-5">
-              <h3 className="text-lg font-bold text-green-300 mb-3">ESP32-C6 (Связь)</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> RISC-V 160MHz</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> WiFi 6 (802.11ax)</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> Bluetooth 5 (LE)</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> IEEE 802.15.4</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> Thread / Zigbee</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> WiFi ↔ P4 мост</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> Mesh networking</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">▸</span> Low power modes</li>
+            <div style={{ background: 'rgba(34,197,94,0.1)', borderRadius: '12px', border: '1px solid rgba(34,197,94,0.2)', padding: '20px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#86efac', marginBottom: '12px' }}>ESP32-C6 (Связь)</h3>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: '13px', color: '#d1d5db' }}>
+                <li style={{ marginBottom: '6px' }}>▸ RISC-V 160MHz</li>
+                <li style={{ marginBottom: '6px' }}>▸ WiFi 6 (802.11ax)</li>
+                <li style={{ marginBottom: '6px' }}>▸ Bluetooth 5 (LE)</li>
+                <li style={{ marginBottom: '6px' }}>▸ IEEE 802.15.4</li>
+                <li style={{ marginBottom: '6px' }}>▸ Thread / Zigbee</li>
+                <li style={{ marginBottom: '6px' }}>▸ WiFi ↔ P4 мост</li>
+                <li style={{ marginBottom: '6px' }}>▸ Mesh networking</li>
+                <li>▸ Low power modes</li>
               </ul>
             </div>
           </div>
@@ -469,82 +356,56 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 mt-12">
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <div className="text-center text-gray-400 text-sm">
-            <p>Исследование проектов для платы GUITION JC4880P443C-I-W-Y (ESP32-P4 + ESP32-C6)</p>
-            <p className="mt-2">Данные собраны из GitHub, Reddit, Home Assistant Community и CNX Software • 2025</p>
-          </div>
-        </div>
+      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.1)', padding: '32px 20px', textAlign: 'center' }}>
+        <p style={{ color: '#9ca3af', fontSize: '14px', margin: 0 }}>Исследование проектов для GUITION JC4880P443C-I-W-Y</p>
+        <p style={{ color: '#6b7280', fontSize: '12px', marginTop: '8px' }}>GitHub, Reddit, Home Assistant Community • 2025</p>
       </footer>
 
       {/* Modal */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setSelectedProject(null)}>
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      {modal && (
+        <div
+          onClick={() => setModal(null)}
+          style={{ position: 'fixed', inset: 0, zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.7)' }}
+        >
           <div
-            className="relative bg-slate-800 rounded-2xl border border-white/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 lg:p-8"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
+            style={{ background: '#1e293b', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', maxWidth: '600px', width: '100%', padding: '24px', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}
           >
             <button
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+              onClick={() => setModal(null)}
+              style={{ position: 'absolute', top: '16px', right: '16px', background: 'none', border: 'none', color: '#9ca3af', fontSize: '24px', cursor: 'pointer' }}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              ✕
             </button>
-
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-5xl">{selectedProject.icon}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+              <span style={{ fontSize: '48px' }}>{modal.icon}</span>
               <div>
-                <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`w-2 h-2 rounded-full ${getCategoryColor(selectedProject.category)}`}></span>
-                  <span className="text-sm text-gray-400">{selectedProject.category}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full border ${getDifficultyColor(selectedProject.difficulty)}`}>
-                    {selectedProject.difficulty}
-                  </span>
+                <h3 style={{ fontSize: '22px', fontWeight: 'bold', margin: 0 }}>{modal.title}</h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+                  <span style={{ fontSize: '12px', color: '#9ca3af' }}>{modal.category}</span>
+                  <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '999px' }} className={diffColor(modal.difficulty)}>{modal.difficulty}</span>
                 </div>
               </div>
             </div>
-
-            <p className="text-gray-300 mb-6">{selectedProject.description}</p>
-
-            <div className="mb-6">
-              <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Возможности</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {selectedProject.features.map(feature => (
-                  <div key={feature} className="flex items-center gap-2 text-sm text-gray-300">
-                    <span className="text-green-400">✓</span>
-                    {feature}
-                  </div>
-                ))}
-              </div>
+            <p style={{ color: '#d1d5db', marginBottom: '20px', lineHeight: '1.6' }}>{modal.description}</p>
+            <h4 style={{ fontSize: '12px', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>Возможности</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '20px' }}>
+              {modal.features.map((f: string) => (
+                <div key={f} style={{ fontSize: '13px', color: '#d1d5db', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ color: '#4ade80' }}>✓</span> {f}
+                </div>
+              ))}
             </div>
-
-            <div className="mb-6">
-              <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Технологии</h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedProject.techStack.map(tech => (
-                  <span key={tech} className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-lg text-sm border border-blue-500/20">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+            <h4 style={{ fontSize: '12px', color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>Технологии</h4>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '20px' }}>
+              {modal.tech.map((t: string) => (
+                <span key={t} style={{ fontSize: '13px', background: 'rgba(59,130,246,0.2)', color: '#93c5fd', padding: '4px 12px', borderRadius: '8px', border: '1px solid rgba(59,130,246,0.2)' }}>{t}</span>
+              ))}
             </div>
-
-            {selectedProject.githubUrl && (
-              <a
-                href={selectedProject.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-green-500/20 text-green-300 px-4 py-2 rounded-lg border border-green-500/20 hover:bg-green-500/30 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                Открыть на GitHub
+            {modal.url && (
+              <a href={modal.url} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(34,197,94,0.2)', color: '#86efac', padding: '8px 16px', borderRadius: '8px', textDecoration: 'none', fontSize: '14px', border: '1px solid rgba(34,197,94,0.2)' }}>
+                Открыть на GitHub →
               </a>
             )}
           </div>
