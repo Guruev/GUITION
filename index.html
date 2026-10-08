@@ -1,12 +1,906 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GUITION JC4880P443C — Проекты</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(59,130,246,0.1), rgba(168,85,247,0.1));
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 999px;
+            padding: 8px 16px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: bold;
+            background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #d1d5db;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .spec-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .spec-label {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .spec-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: rgba(59,130,246,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(59,130,246,0.2);
+            margin-top: 20px;
+        }
+
+        .info-box p {
+            font-size: 14px;
+            color: #bfdbfe;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            flex: 1 1 200px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .project-card:hover {
+            border-color: rgba(59,130,246,0.3);
+            transform: translateY(-2px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .project-icon {
+            font-size: 36px;
+        }
+
+        .difficulty-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+        }
+
+        .difficulty-easy {
+            background: rgba(34,197,94,0.2);
+            color: #86efac;
+        }
+
+        .difficulty-medium {
+            background: rgba(234,179,8,0.2);
+            color: #fde047;
+        }
+
+        .difficulty-hard {
+            background: rgba(239,68,68,0.2);
+            color: #fca5a5;
+        }
+
+        .project-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .project-desc {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .tech-tag {
+            font-size: 11px;
+            background: rgba(255,255,255,0.1);
+            color: #d1d5db;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .project-category {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .resource-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            text-decoration: none;
+            color: white;
+            display: block;
+            transition: all 0.2s;
+        }
+
+        .resource-card:hover {
+            border-color: rgba(34,197,94,0.3);
+        }
+
+        .resource-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .resource-desc {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .arch-card {
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .arch-card-blue {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+
+        .arch-card-green {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+
+        .arch-card-center {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arch-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .arch-title-blue {
+            color: #93c5fd;
+        }
+
+        .arch-title-green {
+            color: #86efac;
+        }
+
+        .arch-list {
+            list-style: none;
+            font-size: 13px;
+            color: #d1d5db;
+        }
+
+        .arch-list li {
+            margin-bottom: 6px;
+        }
+
+        .connection-box {
+            text-align: center;
+        }
+
+        .connection-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .connection-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .connection-subtitle {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 12px;
+        }
+
+        .connection-tags {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .connection-tag {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .tag-wifi {
+            background: rgba(34,197,94,0.2);
+            color: #86efac;
+        }
+
+        .tag-ble {
+            background: rgba(168,85,247,0.2);
+            color: #d8b4fe;
+        }
+
+        .tag-thread {
+            background: rgba(251,146,60,0.2);
+            color: #fed7aa;
+        }
+
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 32px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 24px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon {
+            font-size: 48px;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .modal-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .modal-category {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .modal-desc {
+            color: #d1d5db;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .modal-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-feature {
+            font-size: 13px;
+            color: #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .check-icon {
+            color: #4ade80;
+        }
+
+        .modal-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-tech-tag {
+            font-size: 13px;
+            background: rgba(59,130,246,0.2);
+            color: #93c5fd;
+            padding: 4px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(59,130,246,0.2);
+        }
+
+        .modal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34,197,94,0.2);
+            color: #86efac;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="badge">
+            <span class="badge-dot"></span>
+            <span style="font-size: 14px; color: #d1d5db;">Исследование проектов для ESP32-P4</span>
+        </div>
+        <h1>GUITION JC4880P443C</h1>
+        <p class="subtitle">Исследование open-source проектов для платы с 4.3" IPS дисплеем, ESP32-P4 + ESP32-C6</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>📋 Характеристики платы</h2>
+            <div class="specs-grid" id="specsGrid"></div>
+            <div class="info-box">
+                <p><strong>💡 Особенности:</strong> Двухчиповая архитектура — ESP32-P4 отвечает за дисплей и вычисления (MIPI-DSI, PPA, USB), а ESP32-C6 обеспечивает WiFi 6 / BLE 5 / Thread связь. Поддержка камеры, динамика, SD-карты и тачскрина GT911.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>🚀 Проекты для реализации</h2>
+            <p style="color: #9ca3af; margin-bottom: 24px;">Найдено 12 интересных проектов</p>
+
+            <div class="filters">
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск...">
+                <div class="filter-buttons" id="filterButtons"></div>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid"></div>
+        </section>
+
+        <section>
+            <h2>📚 Ключевые ресурсы</h2>
+            <div class="resources-grid" id="resourcesGrid"></div>
+        </section>
+
+        <section>
+            <h2>🏗️ Архитектура платы</h2>
+            <div style="background: rgba(255,255,255,0.05); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); padding: 24px;">
+                <div class="architecture-grid">
+                    <div class="arch-card arch-card-blue">
+                        <h3 class="arch-title arch-title-blue">ESP32-P4 (Основной)</h3>
+                        <ul class="arch-list">
+                            <li>▸ RISC-V 400MHz dual-core</li>
+                            <li>▸ 768KB SRAM + PSRAM</li>
+                            <li>▸ MIPI-DSI дисплей</li>
+                            <li>▸ PPA (2D графика)</li>
+                            <li>▸ USB OTG</li>
+                            <li>▸ SD/MMC контроллер</li>
+                            <li>▸ Камерный интерфейс</li>
+                            <li>▸ I2S аудио</li>
+                        </ul>
+                    </div>
+                    <div class="arch-card arch-card-center">
+                        <div class="connection-box">
+                            <div class="connection-icon">🔗</div>
+                            <p class="connection-title">UART / RS232</p>
+                            <p class="connection-subtitle">Связь между чипами</p>
+                            <div class="connection-tags">
+                                <span class="connection-tag tag-wifi">WiFi 6</span>
+                                <span class="connection-tag tag-ble">BLE 5</span>
+                                <span class="connection-tag tag-thread">Thread/Zigbee</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-card arch-card-green">
+                        <h3 class="arch-title arch-title-green">ESP32-C6 (Связь)</h3>
+                        <ul class="arch-list">
+                            <li>▸ RISC-V 160MHz</li>
+                            <li>▸ WiFi 6 (802.11ax)</li>
+                            <li>▸ Bluetooth 5 (LE)</li>
+                            <li>▸ IEEE 802.15.4</li>
+                            <li>▸ Thread / Zigbee</li>
+                            <li>▸ WiFi ↔ P4 мост</li>
+                            <li>▸ Mesh networking</li>
+                            <li>▸ Low power modes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>Исследование проектов для GUITION JC4880P443C-I-W-Y</p>
+        <p style="color: #6b7280; font-size: 12px; margin-top: 8px;">GitHub, Reddit, Home Assistant Community • 2025</p>
+    </footer>
+
+    <div class="modal-overlay hidden" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const specs = [
+            { label: 'Модель', value: 'JC4880P443C_I_W_Y' },
+            { label: 'Экран', value: '4.3" IPS TFT' },
+            { label: 'Разрешение', value: '480 × 800 px' },
+            { label: 'Тачскрин', value: 'GT911 Capacitive' },
+            { label: 'Основной MCU', value: 'ESP32-P4 (RISC-V, 400MHz)' },
+            { label: 'WiFi/BLE MCU', value: 'ESP32-C6 (WiFi 6 + BLE 5)' },
+            { label: 'Интерфейс дисплея', value: 'MIPI-DSI (ST7701S)' },
+            { label: 'Камера', value: 'OV2640/OV5640' },
+            { label: 'Аудио', value: 'I2S + Speaker' },
+            { label: 'Хранилище', value: 'MicroSD Card' },
+            { label: 'Питание', value: '5V USB-C' },
+            { label: 'Цена', value: '~$35' }
+        ];
+
+        const projects = [
+            {
+                id: 1,
+                title: 'Home Assistant Dashboard',
+                description: 'Панель управления умным домом с тач-интерфейсом. Отображает состояние датчиков, управление освещением, климатом и безопасностью.',
+                category: 'Умный дом',
+                difficulty: 'Средне',
+                url: 'https://github.com/ultramcu/guition-jc4880p4-bsp',
+                features: ['Управление освещением', 'Мониторинг датчиков', 'Климат-контроль', 'Сцены'],
+                icon: '🏠',
+                tech: ['ESPHome', 'LVGL', 'WiFi', 'MQTT']
+            },
+            {
+                id: 2,
+                title: 'Интернет-радио MiniWebRadio',
+                description: 'Интернет-радио с тач-управлением, эквалайзером, MP3-плеером, будильником и FTP-сервером.',
+                category: 'Мультимедиа',
+                difficulty: 'Средне',
+                url: 'https://github.com/schreibfaul1/ESP32-MiniWebRadio',
+                features: ['WiFi радио', 'MP3 плеер', 'Будильник', 'Эквалайзер'],
+                icon: '📻',
+                tech: ['ESP-IDF', 'I2S', 'LVGL', 'WiFi']
+            },
+            {
+                id: 3,
+                title: 'AI Голосовой Ассистент XiaoZhi',
+                description: 'Открытый AI-чатбот для ESP32 с голосовым взаимодействием. Поддержка LLM (Qwen/DeepSeek).',
+                category: 'AI / IoT',
+                difficulty: 'Сложно',
+                url: 'https://github.com/78/xiaozhi-esp32',
+                features: ['Распознавание речи', 'Синтез голоса', 'AI диалоги', 'IoT'],
+                icon: '🤖',
+                tech: ['ESP-IDF', 'I2S', 'WiFi', 'LLM API']
+            },
+            {
+                id: 4,
+                title: 'Метеостанция + Монитор воздуха',
+                description: 'Метеостанция с прогнозом, мониторингом качества воздуха, LoRa и ESP-NOW сенсорами.',
+                category: 'Мониторинг',
+                difficulty: 'Средне',
+                url: 'https://embeddednerd.com/esp32-p4-weather-station/',
+                features: ['Прогноз погоды', 'Качество воздуха', 'LoRa', 'Графики'],
+                icon: '🌤️',
+                tech: ['ESP-IDF', 'LVGL', 'LoRa', 'ESP-NOW']
+            },
+            {
+                id: 5,
+                title: 'Пульт дистанционного управления',
+                description: 'Универсальный пульт для ИК/RF устройств с настраиваемым тач-интерфейсом.',
+                category: 'Умный дом',
+                difficulty: 'Легко',
+                url: 'https://github.com/elik745i/ESP32-2432S024C-Remote',
+                features: ['ИК управление', 'RF команды', 'Макросы', 'WiFi'],
+                icon: '🎮',
+                tech: ['Arduino', 'IR', 'RF 433', 'WiFi']
+            },
+            {
+                id: 6,
+                title: 'Веб-радио с визуализатором',
+                description: 'Интернет-радио с 32-полосным визуализатором спектра и каталогом станций.',
+                category: 'Мультимедиа',
+                difficulty: 'Средне',
+                url: 'https://github.com/dmatking/esp32-p4-webradio',
+                features: ['Спектр-визуализатор', 'Radio Browser', 'Избранное'],
+                icon: '🎵',
+                tech: ['ESP-IDF', 'FFT', 'I2S', 'LVGL']
+            },
+            {
+                id: 7,
+                title: 'Камера + Видеодомофон',
+                description: 'Видеонаблюдение или видеодомофон с esp_video, стримингом и записью на SD.',
+                category: 'Безопасность',
+                difficulty: 'Сложно',
+                url: 'https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211',
+                features: ['Видеостриминг', 'Запись SD', 'Детекция движения'],
+                icon: '📹',
+                tech: ['ESPHome', 'Camera', 'SD Card', 'I2S']
+            },
+            {
+                id: 8,
+                title: 'Часы + Инфо-панель',
+                description: 'Настольные часы с погодой, календарём, напоминаниями и ночным режимом.',
+                category: 'Информация',
+                difficulty: 'Легко',
+                url: '',
+                features: ['Часы', 'Погода', 'Календарь', 'Ночной режим'],
+                icon: '⏰',
+                tech: ['Arduino', 'LVGL', 'NTP', 'WiFi']
+            },
+            {
+                id: 9,
+                title: 'Мониторинг энергии',
+                description: 'Визуализация солнечной генерации, потребления и возврата энергии в сеть.',
+                category: 'Мониторинг',
+                difficulty: 'Средне',
+                url: '',
+                features: ['Солнечная генерация', 'Потребление', 'Графики', 'HA'],
+                icon: '⚡',
+                tech: ['ESPHome', 'LVGL', 'Modbus', 'MQTT']
+            },
+            {
+                id: 10,
+                title: 'P4 ↔ C6 Коммуникация + SD',
+                description: 'Демо связи ESP32-P4 и C6 через RS232 + работа с SD-картой.',
+                category: 'Обучение',
+                difficulty: 'Легко',
+                url: 'https://github.com/buccaneer-jak/JC4880P443C-P4-to-C6-RS232-communication-and-SD-Card-connection',
+                features: ['RS232 P4↔C6', 'SD карта', 'WiFi через C6'],
+                icon: '🔌',
+                tech: ['ESP-IDF', 'UART', 'SD SPI']
+            },
+            {
+                id: 11,
+                title: 'NINA Astrophotography',
+                description: 'Тач-панель для астрофотографии: карта неба, погода, таймеры экспозиции.',
+                category: 'Специализированный',
+                difficulty: 'Сложно',
+                url: 'https://github.com/chvvkumar/ESP32-P4-NINA-Display',
+                features: ['3D карта неба', 'Таймер экспозиции', 'Статус'],
+                icon: '🔭',
+                tech: ['ESP-IDF', 'LVGL', 'NINA API', '3D']
+            },
+            {
+                id: 12,
+                title: 'Медиа-плеер ESPHome',
+                description: 'Медиа-плеер на ESPHome: стриминг аудио, обложки, управление через HA.',
+                category: 'Мультимедиа',
+                difficulty: 'Средне',
+                url: 'https://jtenniswood.github.io/esphome-media-player/',
+                features: ['Стриминг', 'Обложки', 'HA', 'Очередь'],
+                icon: '🎧',
+                tech: ['ESPHome', 'I2S', 'WiFi', 'HA']
+            }
+        ];
+
+        const resources = [
+            { title: 'guition-jc4880p4-bsp', desc: 'Board Support Package для Arduino/PlatformIO', url: 'https://github.com/ultramcu/guition-jc4880p4-bsp' },
+            { title: 'GitHub Topic: esp32p4', desc: 'Все проекты с тегом ESP32-P4', url: 'https://github.com/topics/esp32p4' },
+            { title: 'HA Working Config', desc: 'Рабочая конфигурация ESPHome', url: 'https://community.home-assistant.io/t/guition-esp32-p4-jc4880p443-working-config/999211' },
+            { title: 'GUITION Official', desc: 'Документация от производителя', url: 'https://www.guition.com/esp32p4-display-module/esp32p4-screen-module' },
+            { title: 'Reddit r/esp32', desc: 'Обсуждение и опыт сообщества', url: 'https://www.reddit.com/r/esp32/' },
+            { title: 'CNX Software', desc: 'Обзор платы с распиновкой', url: 'https://www.cnx-software.com/2025/08/12/4-3-inch-touch-display-board-features-single-esp32-p4-esp32-c6-module-supports-camera-and-speakers/' }
+        ];
+
+        let currentFilter = 'Все';
+        let currentSearch = '';
+
+        function renderSpecs() {
+            const grid = document.getElementById('specsGrid');
+            grid.innerHTML = specs.map(s => `
+                <div class="spec-card">
+                    <div class="spec-label">${s.label}</div>
+                    <div class="spec-value">${s.value}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderFilters() {
+            const categories = ['Все', ...new Set(projects.map(p => p.category))];
+            const container = document.getElementById('filterButtons');
+            container.innerHTML = categories.map(cat => `
+                <button class="filter-btn ${cat === currentFilter ? 'active' : ''}" onclick="setFilter('${cat}')">${cat}</button>
+            `).join('');
+        }
+
+        function renderProjects() {
+            const filtered = projects.filter(p => {
+                const matchCat = currentFilter === 'Все' || p.category === currentFilter;
+                const matchSearch = p.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                    p.description.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = filtered.map(p => `
+                <div class="project-card" onclick="openModal(${p.id})">
+                    <div class="project-header">
+                        <span class="project-icon">${p.icon}</span>
+                        <span class="difficulty-badge difficulty-${p.difficulty === 'Легко' ? 'easy' : p.difficulty === 'Средне' ? 'medium' : 'hard'}">${p.difficulty}</span>
+                    </div>
+                    <h3 class="project-title">${p.title}</h3>
+                    <p class="project-desc">${p.description}</p>
+                    <div class="tech-tags">
+                        ${p.tech.slice(0, 3).map(t => `<span class="tech-tag">${t}</span>`).join('')}
+                    </div>
+                    <div class="project-category">${p.category}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderResources() {
+            const grid = document.getElementById('resourcesGrid');
+            grid.innerHTML = resources.map(r => `
+                <a href="${r.url}" target="_blank" class="resource-card">
+                    <h3 class="resource-title">${r.title}</h3>
+                    <p class="resource-desc">${r.desc}</p>
+                </a>
+            `).join('');
+        }
+
+        function setFilter(cat) {
+            currentFilter = cat;
+            renderFilters();
+            renderProjects();
+        }
+
+        function openModal(id) {
+            const p = projects.find(proj => proj.id === id);
+            const modal = document.getElementById('modal');
+            const body = document.getElementById('modalBody');
+            
+            body.innerHTML = `
+                <div class="modal-header">
+                    <span class="modal-icon">${p.icon}</span>
+                    <div>
+                        <h3 class="modal-title">${p.title}</h3>
+                        <div class="modal-meta">
+                            <span class="modal-category">${p.category}</span>
+                            <span class="difficulty-badge difficulty-${p.difficulty === 'Легко' ? 'easy' : p.difficulty === 'Средне' ? 'medium' : 'hard'}">${p.difficulty}</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="modal-desc">${p.description}</p>
+                <h4 class="modal-section-title">Возможности</h4>
+                <div class="modal-features">
+                    ${p.features.map(f => `<div class="modal-feature"><span class="check-icon">✓</span> ${f}</div>`).join('')}
+                </div>
+                <h4 class="modal-section-title">Технологии</h4>
+                <div class="modal-tech">
+                    ${p.tech.map(t => `<span class="modal-tech-tag">${t}</span>`).join('')}
+                </div>
+                ${p.url ? `<a href="${p.url}" target="_blank" class="modal-link">Открыть на GitHub →</a>` : ''}
+            `;
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderProjects();
+        });
+
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target.id === 'modal') closeModal();
+        });
+
+        renderSpecs();
+        renderFilters();
+        renderProjects();
+        renderResources();
+    </script>
+</body>
 </html>
